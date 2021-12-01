@@ -1,0 +1,177 @@
+-- database
+create schema lms_db;
+
+-- use database
+
+use lms_db;
+
+-- table 1
+Create table LMS_MEMBERS
+(
+	MEMBER_ID Varchar(10),
+	MEMBER_NAME Varchar(30) NOT NULL,
+	CITY VARCHAR(20),
+	DATE_REGISTER Date NOT NULL,
+	DATE_EXPIRE Date ,
+	MEMBERSHIP_STATUS Varchar(15)NOT NULL,
+	 PRIMARY KEY(MEMBER_ID)
+);
+
+-- table 2
+
+Create table LMS_SUPPLIERS_DETAILS
+(
+	SUPPLIER_ID Varchar(3),
+	SUPPLIER_NAME Varchar(30) NOT NULL,
+	ADDRESS	Varchar(50),
+	CONTACT Numeric(10) NOT NULL,
+	EMAIL Varchar(15) NOT NULL,
+	 PRIMARY KEY(SUPPLIER_ID)
+);
+
+-- table 3
+Create table LMS_FINE_DETAILS
+(
+	FINE_RANGE Varchar(3),
+	FINE_AMOUNT numeric(10,2) NOT NULL,
+	 PRIMARY KEY(FINE_RANGE)
+);
+
+-- table 4
+Create table LMS_BOOK_DETAILS
+(
+	BOOK_CODE Varchar(10),	
+	BOOK_TITLE Varchar(50) NOT NULL,
+	CATEGORY Varchar(15) NOT NULL,
+	AUTHOR Varchar(30) NOT NULL,
+	PUBLICATION Varchar(30),
+	PUBLISH_DATE Date,
+	BOOK_EDITION Numeric(2),
+	PRICE Numeric(8,2) NOT NULL,	
+	RACK_NUM Varchar(3),
+	DATE_ARRIVAL Date NOT NULL, 		
+	SUPPLIER_ID Varchar(3) NOT NULL,
+	PRIMARY KEY(BOOK_CODE), 
+         FOREIGN KEY(SUPPLIER_ID) References LMS_SUPPLIERS_DETAILS(SUPPLIER_ID)
+);
+
+-- table 5
+Create table LMS_BOOK_ISSUE
+(
+	BOOK_ISSUE_NO Numeric,
+	MEMBER_ID Varchar(10) NOT NULL,
+	BOOK_CODE Varchar(10) NOT NULL,
+	DATE_ISSUE Date NOT NULL,
+	DATE_RETURN Date NOT NULL,
+        DATE_RETURNED Date NULL,
+	BOOK_ISSUE_STATUS Varchar(20) NOT NULL,
+	FINE_RANGE vARCHAR(3),
+	PRIMARY KEY(BOOK_ISSUE_NO),
+         FOREIGN KEY(MEMBER_ID) References LMS_MEMBERS(MEMBER_ID),
+         FOREIGN KEY(BOOK_CODE) References LMS_BOOK_DETAILS(BOOK_CODE),
+	 FOREIGN KEY(FINE_RANGE) References LMS_FINE_DETAILS(FINE_RANGE)
+);
+-------------------------------------------------------------------------------------------------
+
+-- lms_members 
+
+Insert into LMS_MEMBERS
+Values('LM001', 'AMIT', 'CHENNAI', '12-02-12','13-02-11','Temporary');
+
+Insert into LMS_MEMBERS
+Values('LM002', 'ABDHUL', 'DELHI', '12-04-10','13-04-09','Temporary');
+
+Insert into LMS_MEMBERS
+Values('LM003', 'GAYAN', 'CHENNAI', '13-05-12','13-05-14', 'Permanent');
+
+Insert into LMS_MEMBERS
+Values('LM004', 'RADHA', 'CHENNAI','12-04-22','13-04-14', 'Temporary');
+
+Insert into LMS_MEMBERS
+Values('LM005', 'GURU', 'BANGALORE','12-03-30','13-03-29','Temporary');
+
+Insert into LMS_MEMBERS
+Values('LM006', 'MOHAN', 'CHENNAI','12-04-12','13-04-13','Temporary');
+
+select * from lms_members;
+
+--  LMS_SUPPLIERS_DETAILS 
+Insert into  LMS_SUPPLIERS_DETAILS 
+Values ('S01','SINGAPORE SHOPPEE', 'CHENNAI', 9894123555,'sing@gmail.com');
+
+Insert into  LMS_SUPPLIERS_DETAILS 
+Values ('S02','JK Stores', 'MUMBAI', 9940123450 ,'jks@yahoo.com');
+
+Insert into  LMS_SUPPLIERS_DETAILS 
+Values ('S03','ROSE BOOK STORE', 'TRIVANDRUM', 9444411222,'rose@gmail.com');
+
+Insert into  LMS_SUPPLIERS_DETAILS 
+Values ('S04','KAVARI STORE', 'DELHI', 8630001452,'kavi@redif.com');
+
+Insert into  LMS_SUPPLIERS_DETAILS 
+Values ('S05','EINSTEN BOOK GALLARY', 'US', 9542000001,'eingal@aol.com');
+
+Insert into  LMS_SUPPLIERS_DETAILS 
+Values ('S06','AKBAR STORE', 'MUMBAI',7855623100 ,'akbakst@aol.com');
+
+select * from  LMS_SUPPLIERS_DETAILS ;
+
+-- LMS_FINE_DETAILS
+Insert into LMS_FINE_DETAILS Values('R1', 20);
+
+insert into LMS_FINE_DETAILS Values('R2', 50);
+
+Insert into LMS_FINE_DETAILS Values('R3', 75);
+
+Insert into LMS_FINE_DETAILS Values('R4', 100);
+
+Insert into LMS_FINE_DETAILS Values('R5', 150);
+
+Insert into LMS_FINE_DETAILS Values('R6', 200);
+
+-- LMS_BOOK_DETAILS
+
+Insert into LMS_BOOK_DETAILS
+Values('BL000001', 'Java How To Do Program', 'JAVA', 'Paul J. Deitel', 'Prentice Hall', '99-12-10', 6, 600.00, 'A1','11-05-10', 'S01');
+
+Insert into LMS_BOOK_DETAILS
+Values('BL000002', 'Java: The Complete Reference ', 'JAVA', 'Herbert Schildt',  'Tata Mcgraw Hill ', '11-10-10', 5, 750.00, 'A1', '11-05-10','S03');
+
+Insert into LMS_BOOK_DETAILS 
+Values('BL000003', 'Java How To Do Program', 'JAVA', 'Paul J. Deitel', 'Prentice Hall','99-12-10', 6, 600.00, 'A1','12-05-12', 'S01');
+
+Insert into LMS_BOOK_DETAILS
+Values('BL000004', 'Java: The Complete Reference ', 'JAVA', 'Herbert Schildt', 'Tata Mcgraw Hill ', '99-10-10', 5, 750.00, 'A1', '12-05-12', 'S01');
+
+Insert into LMS_BOOK_DETAILS 
+Values('BL000005', 'Java How To Do Program', 'JAVA', 'Paul J. Deitel',  'Prentice Hall', '99-12-10', 6, 600.00, 'A1', '12-05-12', 'S01');
+
+Insert into LMS_BOOK_DETAILS
+Values('BL000006', 'Java: The Complete Reference ', 'JAVA', 'Herbert Schildt', 'Tata Mcgraw Hill ', '11-10-20', 5, 750.00, 'A1','12-05-12', 'S03');
+
+Insert into LMS_BOOK_DETAILS 
+Values('BL000007', 'Let Us C', 'C', 'Yashavant Kanetkar ', 'BPB Publications','11-12-10',  9, 500.00 , 'A3','10-01-03', 'S03');
+
+Insert into LMS_BOOK_DETAILS 
+Values('BL000008', 'Let Us C', 'C', 'Yashavant Kanetkar ','BPB Publications', '11-12-10',  9, 500.00 , 'A3', '10-01-03', 'S04');
+
+
+-- LMS_BOOK_ISSUE 
+
+Insert into LMS_BOOK_ISSUE 
+Values (001, 'LM001', 'BL000001', '12-05-12',  '12-05-12',  '12-05-12', 'N', 'R1');
+
+Insert into LMS_BOOK_ISSUE 
+Values (002, 'LM002', 'BL000002', '12-04-20',  '12-05-06', '12-05-04',  'N', 'R2');
+
+Insert into LMS_BOOK_ISSUE
+Values (003, 'LM003', 'BL000007', '12-04-01',  '12-04-16',  '12-04-20', 'Y','R1');
+
+Insert into LMS_BOOK_ISSUE 
+Values (004, 'LM004', 'BL000005', '12-04-01',  '12-04-16', '12-04-20',  'Y', 'R1');
+
+Insert into LMS_BOOK_ISSUE 
+Values (005, 'LM005', 'BL000008', '12-03-30',  '12-04-15', '12-04-20','N', 'R2');
+
+
+---------------------------------------------------------------------------------------------------------------------------------
